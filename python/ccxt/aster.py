@@ -3492,6 +3492,9 @@ class aster(Exchange, ImplicitAPI):
         return '0x' + r.rjust(64, '0') + s.rjust(64, '0') + v
 
     def sign(self, path, api='public', method='GET', params={}, headers=None, body=None):
+        # Convert api list to string (e.g., ['fapi', 'public'] -> 'fapiPublic')
+        if isinstance(api, list):
+            api = ''.join([part.capitalize() if i > 0 else part for i, part in enumerate(api)])
         url = self.implode_hostname(self.urls['api'][api]) + '/' + path
         if api == 'fapiPublic' or api == 'sapiPublic':
             if params:
